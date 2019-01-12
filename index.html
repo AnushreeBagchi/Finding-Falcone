@@ -1,57 +1,47 @@
 <html>
-    <head>
-        <link rel='stylesheet' type='text/css' href='css/style.css'>
-    </head>
-    <body>
+
+<head>
+    <link rel='stylesheet' type='text/css' href='css/style.css'>
+</head>
+
+<body>
+    <div class='header'>
         <h1>Finding Falcone!</h1>
         <h3>Select planets you want to search in: </h3>
-        <div class='planets'>
-            <div class='planet1'>
-                <h4>Destination 1</h4>
-                <select>
-                    <option value='DonLon'>DonLon</option>
-                    <option value='Enchai'>Enchai</option>
-                    <option value='Jebing'>Jebing</option>
-                    <option value='Sapir'>Sapir</option>
-                    <option value='Lerbin'>Lerbin</option>
-                    <option value='Pingasor'>Pingasor</option>
-                </select>
-            </div>
-            <div class='planet2'>
-                    <h4>Destination 2</h4>
-                    <select>
-                        <option value='DonLon'>DonLon</option>
-                        <option value='Enchai'>Enchai</option>
-                        <option value='Jebing'>Jebing</option>
-                        <option value='Sapir'>Sapir</option>
-                        <option value='Lerbin'>Lerbin</option>
-                        <option value='Pingasor'>Pingasor</option>
-                    </select>
-                </div>
-                <div class='planet3'>
-                        <h4>Destination 3</h4>
-                        <select>
-                            <option value='DonLon'>DonLon</option>
-                            <option value='Enchai'>Enchai</option>
-                            <option value='Jebing'>Jebing</option>
-                            <option value='Sapir'>Sapir</option>
-                            <option value='Lerbin'>Lerbin</option>
-                            <option value='Pingasor'>Pingasor</option>
-                        </select>
-                    </div>
-                    <div class='planet4'>
-                            <h4>Destination 4</h4>
-                            <select>
-                                <option value='DonLon'>DonLon</option>
-                                <option value='Enchai'>Enchai</option>
-                                <option value='Jebing'>Jebing</option>
-                                <option value='Sapir'>Sapir</option>
-                                <option value='Lerbin'>Lerbin</option>
-                                <option value='Pingasor'>Pingasor</option>
-                            </select>
-                        </div>
+    </div>
+    <div class='planets'>
+        <div class='planet1'>
+            <h4>Destination 1</h4>
+            <select value='select destination' class='planet'>
+                <option value="" selected disabled hidden>Choose here</option>
+            </select>
         </div>
-        <div><button>Find Falcone</button></div>
-        <script src='js/scripts.js'></script>
-    </body>
+        <div class='planet2'>
+            <h4>Destination 2</h4>
+            <select value='select destination' class='planet'>
+                <option value="" selected disabled hidden>Choose here</option>
+            </select>
+        </div>
+        <div class='planet3'>
+            <h4>Destination 3</h4>
+            <select value='select destination' class='planet'>
+                <option value="" selected disabled hidden>Choose here</option>
+            </select>
+        </div>
+        <div class='planet4'>
+            <h4>Destination 4</h4>
+            <select value='select destination' class='planet'>
+                <option value="" selected disabled hidden>Choose here</option>
+            </select>
+        </div>
+    </div>
+    <div><button>Find Falcone</button></div>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous">
+        </script>
+    <script src='js/model.js'></script>
+    <script src='js/utils.js'></script>
+    <script src='js/scripts.js'></script>
+</body>
+
 </html>
