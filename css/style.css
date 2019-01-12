@@ -14,3 +14,17 @@ html{
     justify-content: space-around  ;
 }
 
+.vehicle{
+    margin: 2em;
+    margin-left: 0;
+}
+
+.find-div{
+    display: flex;
+    justify-content: center;
+    margin: 2em;
+}
+
+.find-btn{
+    font-size: x-large;
+}
