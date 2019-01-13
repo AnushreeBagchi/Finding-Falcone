@@ -12,9 +12,13 @@ var app= app||{};
     
     function onPlanetSelect (){
         models.getVehicles().then((data)=>{
-            console.log(data);
             utils.populateVehicles(data);
+            utils.vehicleSetEvent(onVehicleSelect);
         });
+    }
+
+    function onVehicleSelect (planet,vehicle){
+        models.updateVehicleNumber (planet,vehicle);
     }
 
    

@@ -28,3 +28,8 @@ html{
 .find-btn{
     font-size: x-large;
 }
+
+
+input:disabled{
+    cursor: not-allowed;
+}

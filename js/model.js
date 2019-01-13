@@ -32,6 +32,16 @@ app.models={};
         );
     }
 
+    models.updateVehicleNumber = function (selectedPlanet,selectedVehicle){
+        console.log(selectedPlanet,selectedVehicle);
+        for(var key in vehicle){
+            if(vehicle[key].name===selectedVehicle && vehicle[key].total_no!=0){
+                vehicle[key].total_no--;
+                    // console.log(selectedVehicle+' '+vehicle[key].total_no);
+            }
+        }
+    }
+
     
 
 })(app.models);
