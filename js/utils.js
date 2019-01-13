@@ -37,8 +37,7 @@ app.utils = {};
             $(this).parent().children('input').removeClass('selected'); // remove selected class
             $(this).addClass('selected'); 
             $('.selected').prop("checked", true);   
-            // debugger;
-            selectedPlanet=$(this).parent().parent();
+            selectedPlanet=$(this).parent().parent()[0].className;
             selectedVehicle=$(this)[0].defaultValue;
             callback(selectedPlanet,selectedVehicle);
         } );       

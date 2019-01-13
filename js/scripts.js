@@ -6,6 +6,9 @@ var app= app||{};
        models.getPlanets().then(data=>{
          utils.populatePlanets(data);
         });
+        models.getVehicles().then(data=>{
+            //data fetched
+        });
     }
 
     utils.planetsSetEvent (onPlanetSelect);
