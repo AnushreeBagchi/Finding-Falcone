@@ -3,6 +3,7 @@ app.utils = {};
 
 (function (utils) {
     var $current;var selectedVehicle; var selectedPlanet;
+
     utils.populatePlanets = function (data) {
         for (var key in data) {
             $('.planet').append(`<option value='${data[key].name}'>${data[key].name}</option>`);
@@ -12,13 +13,14 @@ app.utils = {};
         $('.planet').change(function () {
             $(this).parent().append(`<div class= 'vehicle'></div>`);
             $current = $(this).parent().children('.vehicle');
-            callback();
+            destinationName=$(this).parent()[0].className;
+            callback(destinationName, $(this).val());
         });
 
     }
 
     utils.populateVehicles = function (data) {
-        if ($current.children().length==0) {
+        $current.empty();
             for (var key in data) {
                 if(data[key].total_no===0){
                     $current.append(`<input type='radio' value='${data[key].name}' disabled>${data[key].name}(${data[key].total_no})<br>`);
@@ -27,26 +29,52 @@ app.utils = {};
                 $current.append(`<input type='radio' value='${data[key].name}'>${data[key].name}(${data[key].total_no})<br>`);
                 }
             }
-        }
     }
 
-    utils.vehicleSetEvent= function(callback){
-        
-        $('.vehicle input').on('click',function(){
-            $(this).parent().children('input').prop("checked", false); //uncheck all other radio buttons
-            $(this).parent().children('input').removeClass('selected'); // remove selected class
-            $(this).addClass('selected'); 
-            $('.selected').prop("checked", true);   
-            selectedPlanet=$(this).parent().parent()[0].className;
-            selectedVehicle=$(this)[0].defaultValue;
-            callback(selectedPlanet,selectedVehicle);
+    utils.setUpEventHandlersForVehicle= function(callback){  
+            $('.vehicle input').on('click',function(){
+                $(this).parent().children('input').prop("checked", false); //uncheck all other radio buttons
+                $(this).parent().children('input').removeClass('selected'); // remove selected class
+                $(this).addClass('selected'); 
+                $('.selected').prop("checked", true);  
+                if (!$(this).parent().parent()[0]) {
+                    return;
+                } 
+                selectedPlanet=$(this).parent().parent()[0].className;
+                selectedVehicle=$(this)[0].defaultValue;
+                callback(selectedPlanet,selectedVehicle);
         } );       
+    }
+    utils.clearEvents = function() {
+        $('.vehicle input').off("click");
+    }
+
+    utils.renderVehicles=function(data){
+        
+        utils.populateVehicles(data);
+    }
+
+    utils.renderState=function(data){
+        
+        for (var destinationName in data) {
+            var destinationDetails = data[destinationName];
+            let $el = $("."+ destinationName).children('.vehicle');
+            $el.empty();
+            destinationDetails.vehiclesList.forEach(vehicleDetails => {
+                let isVehicleSelected = destinationDetails.selectedVehicle? 
+                    destinationDetails.selectedVehicle.name == vehicleDetails.name: false;
+                let {name, total_no} = vehicleDetails;
+                var input = `<input type='radio' name='${destinationName}' value='${name}'`
+                if (isVehicleSelected) {
+                    input+=" checked "
+                   
+                }
+
+                input+=`>${name}(${total_no}) <br>`;
+                $el.append(input);
+            });
+        }
     }
 
     
 })(app.utils);
-
-// debugger;
-            // selectedVehicle.push($(this)[0].defaultValue);
-            // console.log($(this)[0].defaultValue);
-            // console.log(selectedVehicle)

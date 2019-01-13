@@ -4,27 +4,29 @@ var app= app||{};
     var {utils, models}= app;
     function init(){
        models.getPlanets().then(data=>{
+         utils.planetsSetEvent (onPlanetSelect);
          utils.populatePlanets(data);
         });
-        models.getVehicles().then(data=>{
-            //data fetched
-        });
     }
 
-    utils.planetsSetEvent (onPlanetSelect);
-    
-    function onPlanetSelect (){
+    function onPlanetSelect (destinationName, planetName){
         models.getVehicles().then((data)=>{
+            models.updatePlanet(destinationName, planetName);
             utils.populateVehicles(data);
-            utils.vehicleSetEvent(onVehicleSelect);
+            reRender();
         });
     }
 
-    function onVehicleSelect (planet,vehicle){
-        models.updateVehicleNumber (planet,vehicle);
+    function onVehicleSelect (destination,vehicle, planet){
+        models.updateVehicleNumber (destination,vehicle, planet);
+        reRender();  
     }
 
-   
+    function reRender() {
+        utils.clearEvents();
+        utils.renderState(models.getCurrentState());
+        utils.setUpEventHandlersForVehicle(onVehicleSelect);
+    }
 
     init();
 })(app); 
