@@ -29,6 +29,7 @@ var app= app||{};
         utils.clearEvents();
         utils.renderState(models.getCurrentState());
         utils.setUpEventHandlersForVehicle(onVehicleSelect);
+        utils.displayTotalTime();
     }
 
     init();

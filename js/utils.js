@@ -2,7 +2,7 @@ var app = app || {};
 app.utils = {};
 
 (function (utils) {
-    var $current;var selectedVehicle; var selectedPlanet;
+    var $current;var selectedVehicle; var selectedPlanet; var total_time;
 
     utils.populatePlanets = function (data) {
         for (var key in data) {
@@ -87,7 +87,7 @@ app.utils = {};
 
     utils.calculateTotalTime= function (state){
         let distance , speed, time;
-        var total_time=0;
+        total_time=0;
         // console.log(state);
         for (var key in state){
            if(state[key].selectedPlanet!= null && state[key].selectedVehicle!= null){
@@ -98,6 +98,10 @@ app.utils = {};
             console.log(total_time);
            }
         }
+    }
+
+    utils.displayTotalTime= function (){
+        $('.timeTaken').text(total_time);
     }
 
     
