@@ -9,6 +9,21 @@ app.utils = {};
             $('.planet').append(`<option value='${data[key].name}'>${data[key].name}</option>`);
         }
     }
+
+    utils.setUpEventHandlersForDestination= function(callback){
+        $('.planet').on('click',callback($(this)));
+    }
+
+    utils.clearPlanetData=function(el){
+        debugger;
+    }
+
+    utils.markSelectedPlanet=function(destination,planet){
+        // $(`.${destination} option`).removeAttr('disabled')
+        $( `option:contains('${planet}')` ).attr("disabled","disabled");
+        debugger;
+    }
+
     utils.planetsSetEvent = function (callback) {
         $('.planet').change(function () {
             $(this).parent().append(`<div class= 'vehicle'></div>`);
