@@ -10,18 +10,10 @@ app.utils = {};
         }
     }
 
-    utils.setUpEventHandlersForDestination= function(callback){
-        $('.planet').on('click',callback($(this)));
-    }
-
-    utils.clearPlanetData=function(el){
-        debugger;
-    }
-
     utils.markSelectedPlanet=function(destination,planet){
         // $(`.${destination} option`).removeAttr('disabled')
         $( `option:contains('${planet}')` ).attr("disabled","disabled");
-        debugger;
+       
     }
 
     utils.planetsSetEvent = function (callback) {
@@ -57,6 +49,8 @@ app.utils = {};
                 } 
                 selectedPlanet=$(this).parent().parent()[0].className;
                 selectedVehicle=$(this)[0].defaultValue;
+                // console.log(selectedPlanet,selectedVehicle);
+                // debugger;
                 callback(selectedPlanet,selectedVehicle);
         } );       
     }
@@ -88,6 +82,21 @@ app.utils = {};
                 input+=`>${name}(${total_no}) <br>`;
                 $el.append(input);
             });
+        }
+    }
+
+    utils.calculateTotalTime= function (state){
+        let distance , speed, time;
+        var total_time=0;
+        // console.log(state);
+        for (var key in state){
+           if(state[key].selectedPlanet!= null && state[key].selectedVehicle!= null){
+            distance=state[key].selectedPlanet.distance;
+            speed=state[key].selectedVehicle.speed;
+            time=distance/speed;
+            total_time+=time;
+            console.log(total_time);
+           }
         }
     }
 

@@ -47,3 +47,12 @@ html{
 input:disabled{
     cursor: not-allowed;
 }
+
+.divTime{
+    /* display: block; */
+    /* align-items: center; */
+}
+
+.timeTaken{
+    font-weight: bold;
+}

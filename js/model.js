@@ -40,7 +40,7 @@ app.models={};
     };
 
 
-
+    
 
     models.getState=function(){
         return currentState;
@@ -126,7 +126,7 @@ app.models={};
             })
          })
        });
-       console.log(currentState);
+    //    console.log(currentState);
     }
 
     function isVehicleNameSelectedInDestination(vehicleName, destinationName) {

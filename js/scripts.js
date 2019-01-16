@@ -21,6 +21,7 @@ var app= app||{};
 
     function onVehicleSelect (destination,vehicle, planet){
         models.updateVehicleNumber (destination,vehicle, planet);
+        utils.calculateTotalTime(models.getCurrentState());
         reRender();  
     }
 
