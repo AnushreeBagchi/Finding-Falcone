@@ -18,12 +18,12 @@ app.utils = {};
 
     utils.planetsSetEvent = function (callback) {
         $('.planet').change(function () {
+            $(this).parent().children(".vehicle").remove();
             $(this).parent().append(`<div class= 'vehicle'></div>`);
             $current = $(this).parent().children('.vehicle');
             destinationName=$(this).parent()[0].className;
             callback(destinationName, $(this).val());
         });
-
     }
 
     utils.populateVehicles = function (data) {
@@ -49,8 +49,6 @@ app.utils = {};
                 } 
                 selectedPlanet=$(this).parent().parent()[0].className;
                 selectedVehicle=$(this)[0].defaultValue;
-                // console.log(selectedPlanet,selectedVehicle);
-                // debugger;
                 callback(selectedPlanet,selectedVehicle);
         } );       
     }
@@ -58,28 +56,27 @@ app.utils = {};
         $('.vehicle input').off("click");
     }
 
-    utils.renderVehicles=function(data){
-        
-        utils.populateVehicles(data);
-    }
+    utils.clearVehicles=function(destinationName){
+        $("."+ destinationName).children('.vehicle').empty()
+    };
 
     utils.renderState=function(data){
-        
         for (var destinationName in data) {
             var destinationDetails = data[destinationName];
             let $el = $("."+ destinationName).children('.vehicle');
-            $el.empty();
+            utils.clearVehicles(destinationName);
             destinationDetails.vehiclesList.forEach(vehicleDetails => {
                 let isVehicleSelected = destinationDetails.selectedVehicle? 
                     destinationDetails.selectedVehicle.name == vehicleDetails.name: false;
-                let {name, total_no} = vehicleDetails;
+                let {name, total_no} = vehicleDetails; 
                 var input = `<input type='radio' name='${destinationName}' value='${name}'`
                 if (isVehicleSelected) {
-                    input+=" checked "
-                   
+                    input+=" checked "  
                 }
-
-                input+=`>${name}(${total_no}) <br>`;
+                if (total_no==0){
+                    input+=" disabled"    
+                }
+                input+=`><span>${name}(${total_no})</span> <br>`;
                 $el.append(input);
             });
         }
@@ -88,14 +85,12 @@ app.utils = {};
     utils.calculateTotalTime= function (state){
         let distance , speed, time;
         total_time=0;
-        // console.log(state);
         for (var key in state){
            if(state[key].selectedPlanet!= null && state[key].selectedVehicle!= null){
             distance=state[key].selectedPlanet.distance;
             speed=state[key].selectedVehicle.speed;
             time=distance/speed;
             total_time+=time;
-            console.log(total_time);
            }
         }
     }
@@ -103,6 +98,10 @@ app.utils = {};
     utils.displayTotalTime= function (){
         $('.timeTaken').text(total_time);
     }
+
+    // utils.xyz= function (data){
+    //    console.log(data);
+    // }
 
     
 })(app.utils);

@@ -7,10 +7,11 @@ var app= app||{};
             utils.planetsSetEvent (onPlanetSelect);
             utils.populatePlanets(data);
            });
-
     }
 
     function onPlanetSelect (destinationName, planetName){ 
+        // debugger;
+        utils.clearVehicles(destinationName);
         models.getVehicles().then((data)=>{
             models.updatePlanet(destinationName, planetName);
             utils.populateVehicles(data);
@@ -30,6 +31,14 @@ var app= app||{};
         utils.renderState(models.getCurrentState());
         utils.setUpEventHandlersForVehicle(onVehicleSelect);
         utils.displayTotalTime();
+        pqr();
+    }
+
+    function getToken(){
+        models.postFunction().then(data=>{
+            debugger;
+            console.log(data);
+        })
     }
 
     init();

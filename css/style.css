@@ -51,3 +51,8 @@ input:disabled{
 .timeTaken{
     font-weight: bold;
 }
+
+.grey{
+    cursor: not-allowed;
+    color: lightgrey;
+}

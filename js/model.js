@@ -1,21 +1,21 @@
-var app=app||{};
-app.models={};
+var app = app || {};
+app.models = {};
 
-(function(models){
+(function (models) {
     var planets, vehicle, originalVehicle;
     var destinations = ["destination1", "destination2", "destination3", "destination4"];
     var currentState = {
-        destination1 : {
+        destination1: {
             selectedPlanet: {
                 name: "",
-                distance:""
+                distance: ""
             },
             selectedVehicle: {
                 name: "",
                 max_distance: "",
                 speed: ""
             },
-            vehiclesList : [
+            vehiclesList: [
                 {
                     name: "",
                     total_no: 0
@@ -25,81 +25,106 @@ app.models={};
         destination2: {
             selectedPlanet: null,
             selectedVehicle: null,
-            vehiclesList : []
+            vehiclesList: []
         },
         destination3: {
             selectedPlanet: null,
             selectedVehicle: null,
-            vehiclesList : []
+            vehiclesList: []
         },
         destination4: {
             selectedPlanet: null,
             selectedVehicle: null,
-            vehiclesList : []
+            vehiclesList: []
         }
     };
 
-
-    
-
-    models.getState=function(){
+    models.getState = function () {
         return currentState;
     }
-    models.getPlanets= function() {
+    models.getPlanets = function () {
         if (planets) {
-            return new Promise((resolve,reject)=>{
+            return new Promise((resolve, reject) => {
                 resolve(planets);
             })
         }
-        return fetch('code/planet.json').then(function(response){
+        return fetch('code/planet.json').then(function (response) {
             return response.json();
-        }).then(data=>{
-            planets= data;
-            originalPlanets= planets;
+        }).then(data => {
+            planets = data;
+            originalPlanets = planets;
             return planets;
         });
     }
 
-    models.getVehicles= function(){
-        if(vehicle){
-            return new Promise((resolve, reject)=>{
+    models.getVehicles = function () {
+        if (vehicle) {
+            return new Promise((resolve, reject) => {
                 resolve(vehicle);
             })
         }
-        return fetch ('code/vehicle.json').then(function(response){
+        return fetch('code/vehicle.json').then(function (response) {
             return response.json();
-        }).then((data)=>{
-            vehicle=data;
-            originalVehicle= JSON.parse(JSON.stringify(data)); // creating another copy of the data 
+        }).then((data) => {
+            vehicle = data;
+            originalVehicle = JSON.parse(JSON.stringify(data)); // creating another copy of the data 
             return data;
         }
         );
     }
-    models.updatePlanet = function(destinationName, selectedPlanetName) {
-        currentState[destinationName].selectedPlanet =  getPlanetWithName(selectedPlanetName);
+
+    models.postFunction = function () {
+        return fetch('https://findfalcone.herokuapp.com/token', {
+                     method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+            }
+        }).then((r) => { return  r.json() });
+    }
+    
+    // var requestBody= {
+    //     "token":"",
+    //     "planet_names":["Donlon","Enchai"],
+    //     "vehicle_names":["",""]
+    // }
+
+    models.findFalcone= function (){
+        return fetch('https://findfalcone.herokuapp.com/find',{
+                    method: 'POST',
+                    headers:{
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({a: 1, b: 'Textual content'})
+        })
+    }
+
+    models.updatePlanet = function (destinationName, selectedPlanetName) {
+        currentState[destinationName].selectedPlanet = getPlanetWithName(selectedPlanetName);
         recalculate();
     }
 
-    models.updateVehicleNumber = function (destinationName,selectedVehicleName){
+    models.updateVehicleNumber = function (destinationName, selectedVehicleName) {
         currentState[destinationName].selectedVehicle = getVehicleWithName(selectedVehicleName);
         recalculate();
         return;
     }
 
-    getVehicleWithName = function(name) {
-        let selected ;
+    getVehicleWithName = function (name) {
+        let selected;
         vehicle.forEach((vehicle) => {
-            if(vehicle.name == name) {
+            if (vehicle.name == name) {
                 selected = vehicle;
             }
         });
         return selected;
     }
 
-    getPlanetWithName = function(name) {
-        let selected ;
+    getPlanetWithName = function (name) {
+        let selected;
         planets.forEach((planet) => {
-            if(planet.name == name) {
+            if (planet.name == name) {
                 selected = planet;
             }
         });
@@ -107,36 +132,36 @@ app.models={};
     }
 
 
-    models.getCurrentState = function (){
+    models.getCurrentState = function () {
         return currentState;
     }
-    
+
     function recalculate() {
-       clearVehiclesListInCurrentState();
-       let vehicles = JSON.parse(JSON.stringify(originalVehicle));
-       vehicles.forEach((vehicle) => {
-         destinations.forEach((destinationName)=>{
-            if(isVehicleNameSelectedInDestination(vehicle.name, destinationName)) {
-                vehicle.total_no--;
-                
-            };
-            addtoVehicleList(destinationName, {
-                name: vehicle.name,
-                total_no: vehicle.total_no
+        clearVehiclesListInCurrentState();
+        let vehicles = JSON.parse(JSON.stringify(originalVehicle));
+        vehicles.forEach((vehicle) => {
+            destinations.forEach((destinationName) => {
+                if (isVehicleNameSelectedInDestination(vehicle.name, destinationName) && vehicle.total_no != 0) {
+                    vehicle.total_no--;
+                };
+
+                addtoVehicleList(destinationName, {
+                    name: vehicle.name,
+                    total_no: vehicle.total_no
+                })
             })
-         })
-       });
-    //    console.log(currentState);
+        });
+
     }
 
     function isVehicleNameSelectedInDestination(vehicleName, destinationName) {
-        if(!currentState[destinationName].selectedVehicle) {
+        if (!currentState[destinationName].selectedVehicle) {
             return false;
         }
         return currentState[destinationName].selectedVehicle.name === vehicleName;
     }
     function clearVehiclesListInCurrentState() {
-        for(key in currentState) {
+        for (key in currentState) {
             currentState[key].vehiclesList = [];
         }
     }
@@ -145,7 +170,7 @@ app.models={};
         currentState[destinationName]["vehiclesList"].push(vehicleDetails);
     }
 
-    
-    
+
+
 
 })(app.models);
