@@ -143,7 +143,7 @@ app.models = {};
         let vehicles = JSON.parse(JSON.stringify(originalVehicle));
         vehicles.forEach((vehicle) => {
             destinations.forEach((destinationName) => {
-                if (isVehicleNameSelectedInDestination(vehicle.name, destinationName) && vehicle.total_no != 0) {
+                if (isVehicleNameSelectedInDestination(vehicle.name, destinationName) && vehicle.total_no != -1) {
                     vehicle.total_no--;
                 };
 
@@ -171,7 +171,7 @@ app.models = {};
     function addtoVehicleList(destinationName, vehicleDetails) {
         currentState[destinationName]["vehiclesList"].push(vehicleDetails);
     }
-    
+
     models.updateRequestBody = function (data, state){
         //updating token
         requestBody.token=data.token; 

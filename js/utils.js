@@ -29,7 +29,7 @@ app.utils = {};
     utils.populateVehicles = function (data) {
         $current.empty();
             for (var key in data) {
-                if(data[key].total_no===0){
+                if(data[key].total_no===-1){
                     $current.append(`<input type='radio' value='${data[key].name}' disabled>${data[key].name}(${data[key].total_no})<br>`);
                 }
                 else{
@@ -73,10 +73,14 @@ app.utils = {};
                 if (isVehicleSelected) {
                     input+=" checked "  
                 }
-                if (total_no==0){
+                if (total_no===-1){
                     input+=" disabled"    
+                    input+=`><span>${name}(0)</span> <br>`;
                 }
-                input+=`><span>${name}(${total_no})</span> <br>`;
+                else{
+                    input+=`><span>${name}(${total_no})</span> <br>`;
+                }
+               
                 $el.append(input);
             });
         }
