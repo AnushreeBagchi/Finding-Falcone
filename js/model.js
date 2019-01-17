@@ -3,6 +3,7 @@ app.models = {};
 
 (function (models) {
     var planets, vehicle, originalVehicle;
+     
     var destinations = ["destination1", "destination2", "destination3", "destination4"];
     var currentState = {
         destination1: {
@@ -38,6 +39,7 @@ app.models = {};
             vehiclesList: []
         }
     };
+    
 
     models.getState = function () {
         return currentState;
@@ -83,21 +85,21 @@ app.models = {};
         }).then((r) => { return  r.json() });
     }
     
-    // var requestBody= {
-    //     "token":"",
-    //     "planet_names":["Donlon","Enchai"],
-    //     "vehicle_names":["",""]
-    // }
+    var requestBody= {
+        "token": "",
+        "planet_names": [],
+        "vehicle_names":[]
+    }
 
     models.findFalcone= function (){
-        return fetch('https://findfalcone.herokuapp.com/find',{
+        return fetch("https://findfalcone.herokuapp.com/find",{
                     method: 'POST',
                     headers:{
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({a: 1, b: 'Textual content'})
-        })
+                    body: JSON.stringify(requestBody)
+        }).then((r)=>{return r.json()})
     }
 
     models.updatePlanet = function (destinationName, selectedPlanetName) {
@@ -169,7 +171,22 @@ app.models = {};
     function addtoVehicleList(destinationName, vehicleDetails) {
         currentState[destinationName]["vehiclesList"].push(vehicleDetails);
     }
+    
+    models.updateRequestBody = function (data, state){
+        //updating token
+        requestBody.token=data.token; 
+        requestBody.planet_names=[];
+        requestBody.vehicle_names=[];
+        for(var destination in state){
+            //updating planet names
+            requestBody.planet_names.push(state[destination].selectedPlanet.name);
+            //update vehicle name
+            requestBody.vehicle_names.push(state[destination].selectedVehicle.name);
+        }
+        // console.log(requestBody);
+    }
 
+    
 
 
 

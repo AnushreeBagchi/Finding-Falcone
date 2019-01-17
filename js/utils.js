@@ -99,9 +99,9 @@ app.utils = {};
         $('.timeTaken').text(total_time);
     }
 
-    // utils.xyz= function (data){
-    //    console.log(data);
-    // }
+    utils.setEventFind= function (callback){
+        $('.find-btn').on ('click',callback)
+    }
 
     
 })(app.utils);

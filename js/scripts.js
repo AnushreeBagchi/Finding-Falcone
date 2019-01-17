@@ -7,6 +7,8 @@ var app= app||{};
             utils.planetsSetEvent (onPlanetSelect);
             utils.populatePlanets(data);
            });
+        utils.setEventFind(getToken);
+        
     }
 
     function onPlanetSelect (destinationName, planetName){ 
@@ -31,14 +33,24 @@ var app= app||{};
         utils.renderState(models.getCurrentState());
         utils.setUpEventHandlersForVehicle(onVehicleSelect);
         utils.displayTotalTime();
-        pqr();
+       
     }
 
     function getToken(){
-        models.postFunction().then(data=>{
-            debugger;
-            console.log(data);
+        models.postFunction().then(token =>{
+            models.updateRequestBody(token, models.getCurrentState());
+            models.findFalcone().then(data=> {
+                
+                // console.log(data);
+                if (data.status==='success'){
+                    window.alert(`Falcone found in ${data.planet_name}!!!`);
+                }
+                else{
+                    window.alert("Try Again");
+                }
+            });
         })
+        
     }
 
     init();
