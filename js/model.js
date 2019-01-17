@@ -3,8 +3,10 @@ app.models = {};
 
 (function (models) {
     var planets, vehicle, originalVehicle;
-     
+
     var destinations = ["destination1", "destination2", "destination3", "destination4"];
+
+    // creating a variable to capture the current state
     var currentState = {
         destination1: {
             selectedPlanet: {
@@ -39,11 +41,13 @@ app.models = {};
             vehiclesList: []
         }
     };
-    
 
+    // function to return current state
     models.getState = function () {
         return currentState;
     }
+
+    //getting planets from json
     models.getPlanets = function () {
         if (planets) {
             return new Promise((resolve, reject) => {
@@ -56,9 +60,10 @@ app.models = {};
             planets = data;
             originalPlanets = planets;
             return planets;
-        });
+        }).catch(err=>window.alert(err));
     }
 
+    //getting vehicles from json
     models.getVehicles = function () {
         if (vehicle) {
             return new Promise((resolve, reject) => {
@@ -71,37 +76,41 @@ app.models = {};
             vehicle = data;
             originalVehicle = JSON.parse(JSON.stringify(data)); // creating another copy of the data 
             return data;
-        }
-        );
+        }).catch(err=>window.alert(err));
     }
 
+    // post function to get the token
     models.postFunction = function () {
         return fetch('https://findfalcone.herokuapp.com/token', {
-                     method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             }
-        }).then((r) => { return  r.json() });
+        }).then((r) => { return r.json() })
+        .catch(err=>window.alert(err));;
     }
-    
-    var requestBody= {
+
+    // creatin request body for findFalcone api request
+    var requestBody = {
         "token": "",
         "planet_names": [],
-        "vehicle_names":[]
+        "vehicle_names": []
     }
 
-    models.findFalcone= function (){
-        return fetch("https://findfalcone.herokuapp.com/find",{
-                    method: 'POST',
-                    headers:{
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(requestBody)
-        }).then((r)=>{return r.json()})
+    models.findFalcone = function () {
+        return fetch("https://findfalcone.herokuapp.com/find", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+        }).then((r) => { return r.json() })
+        .catch(err=>window.alert(err));
     }
 
+    // update planets and rerender
     models.updatePlanet = function (destinationName, selectedPlanetName) {
         currentState[destinationName].selectedPlanet = getPlanetWithName(selectedPlanetName);
         recalculate();
@@ -132,7 +141,6 @@ app.models = {};
         });
         return selected;
     }
-
 
     models.getCurrentState = function () {
         return currentState;
@@ -172,12 +180,12 @@ app.models = {};
         currentState[destinationName]["vehiclesList"].push(vehicleDetails);
     }
 
-    models.updateRequestBody = function (data, state){
+    models.updateRequestBody = function (data, state) {
         //updating token
-        requestBody.token=data.token; 
-        requestBody.planet_names=[];
-        requestBody.vehicle_names=[];
-        for(var destination in state){
+        requestBody.token = data.token;
+        requestBody.planet_names = [];
+        requestBody.vehicle_names = [];
+        for (var destination in state) {
             //updating planet names
             requestBody.planet_names.push(state[destination].selectedPlanet.name);
             //update vehicle name
@@ -186,7 +194,7 @@ app.models = {};
         // console.log(requestBody);
     }
 
-    
+
 
 
 

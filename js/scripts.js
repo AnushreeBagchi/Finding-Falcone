@@ -1,31 +1,31 @@
-var app= app||{};
+var app = app || {};
 
-(function(){
-    var {utils, models}= app;
-    function init(){
-        models.getPlanets().then(data=>{
-            utils.planetsSetEvent (onPlanetSelect);
+(function () {
+    var { utils, models } = app;
+    function init() {
+        models.getPlanets().then(data => {
+            utils.planetsSetEvent(onPlanetSelect);
             utils.populatePlanets(data);
-           });
+        });
         utils.setEventFind(getToken);
-        
+
     }
 
-    function onPlanetSelect (destinationName, planetName){ 
+    function onPlanetSelect(destinationName, planetName) {
         // debugger;
         utils.clearVehicles(destinationName);
-        models.getVehicles().then((data)=>{
+        models.getVehicles().then((data) => {
             models.updatePlanet(destinationName, planetName);
             utils.populateVehicles(data);
             reRender();
         });
-        utils.markSelectedPlanet(destinationName,planetName);
+        utils.markSelectedPlanet(destinationName, planetName);
     }
 
-    function onVehicleSelect (destination,vehicle, planet){
-        models.updateVehicleNumber (destination,vehicle, planet);
+    function onVehicleSelect(destination, vehicle, planet) {
+        models.updateVehicleNumber(destination, vehicle, planet);
         utils.calculateTotalTime(models.getCurrentState());
-        reRender();  
+        reRender();
     }
 
     function reRender() {
@@ -33,24 +33,24 @@ var app= app||{};
         utils.renderState(models.getCurrentState());
         utils.setUpEventHandlersForVehicle(onVehicleSelect);
         utils.displayTotalTime();
-       
+
     }
 
-    function getToken(){
-        models.postFunction().then(token =>{
+    function getToken() {
+        models.postFunction().then(token => {
             models.updateRequestBody(token, models.getCurrentState());
-            models.findFalcone().then(data=> {
-                
+            models.findFalcone().then(data => {
+
                 // console.log(data);
-                if (data.status==='success'){
+                if (data.status === 'success') {
                     window.alert(`Falcone found in ${data.planet_name}!!!`);
                 }
-                else{
+                else {
                     window.alert("Try Again");
                 }
             });
         })
-        
+
     }
 
     init();
